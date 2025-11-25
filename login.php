@@ -1,24 +1,65 @@
 <?php
+// Khởi động session để ghi nhớ thông tin đăng nhập
 session_start();
-include "DB/connect.php";
-if (isset($_POST["login"])) {
-    $username = $_POST['username'];
-    $password = $_POST['password'];
 
+// Nhúng file kết nối CSDL
+include "DB/connect.php";
+
+// KIỂM TRA NGƯỜI DÙNG ĐÃ ẤN NÚT "ĐĂNG NHẬP" CHƯA
+if (isset($_POST["login"])) {
+
+    // Lấy dữ liệu từ form: tên đăng nhập và mật khẩu
+    $username = trim($_POST['username']);
+    $password = trim($_POST['password']);
+
+    // Chống  SQL Injection
+    $username = mysqli_real_escape_string($conn, $username);
+    $password = mysqli_real_escape_string($conn, $password);
+
+    // VALIDATE 
+    // Kiểm tra các trường để trống
+    if ($username == "" || $password == "") {
+        echo "<script>alert('Tên đăng nhập và mật khẩu không được trống!');</script>";
+        return;
+    }
+
+    // Kiểm tra độ dài
+    if (strlen($username) < 3) {
+        echo "<script>alert('Tên đăng nhập phải có ít nhất 3 ký tự!');</script>";
+        return;
+    }
+
+    if (strlen($password) < 3) {
+        echo "<script>alert('Mật khẩu phải có ít nhất 3 ký tự!');</script>";
+        return;
+    }
+
+    // Kiểm tra ký tự hợp lệ -> username chỉ chữ + số + _
+    if (!preg_match('/^[A-Za-z0-9_]+$/', $username)) {
+        echo "<script>alert('Tên đăng nhập chỉ được chứa chữ, số và dấu gạch dưới (_)!');</script>";
+        return;
+    }
+
+    // Câu truy vấn tìm tài khoản theo username và password
     $sql = "SELECT * FROM nguoidung WHERE username = '$username'";
+
+    // Thực thi truy vấn
     $result = mysqli_query($conn, $sql);
 
 
+    // Nếu có ít nhất 1 tài khoản tồn tại
     if (mysqli_num_rows($result) > 0) {
         $row = mysqli_fetch_assoc($result);
 
-        if ($password == $row['password']) {
+        // Kiểm tra mật khẩu đã mã hóa
+        if (password_verify($password, $row['password'])) {
 
+            // Lưu thông tin cần thiết vào session
             $_SESSION['user_id'] = $row['user_id'];
             $_SESSION['role'] = $row['role'];
             $_SESSION['ma_khoa'] = $row['ma_khoa'];
 
-            // PHÂN QUYỀN CHUYỂN TRANG
+            // PHÂN QUYỀN -> CHUYỂN TRANG TƯƠNG ỨNG
             switch ($row['role']) {
                 case 'NV_Khoa':
                     header("Location: ./NVKhoa/nv_khoa.php");
@@ -35,9 +76,11 @@ if (isset($_POST["login"])) {
             }
             exit;
         } else {
+            // Sai mật khẩu -> thông báo lỗi
             echo "<script>alert('Sai mật khẩu!');</script>";
         }
     } else {
+        // Không tìm thấy tài khoản trong hệ thống
         echo "<script>alert('Tài khoản không tồn tại!');</script>";
     }
 }
@@ -169,18 +212,22 @@ if (isset($_POST["login"])) {
 
 <body>
     <form method="POST" class="login-container">
+        <!-- Tên giao diện -->
         <h2>Đăng nhập hệ thống</h2>
 
         <div class="input-group">
+            <!-- Tên đăng nhập -->
             <label for="username">Tên đăng nhập</label>
             <input type="text" id="username" name="username" placeholder="Nhập tên đăng nhập" required>
         </div>
 
         <div class="input-group">
+            <!-- Mật khẩu -->
             <label for="password">Mật khẩu</label>
             <input type="password" id="password" name="password" placeholder="Nhập mật khẩu" required>
         </div>
 
+        <!-- Nút Đăng nhập -->
         <button type="submit" name="login">Đăng nhập</button>
 
         <div class="footer">
