@@ -5,6 +5,10 @@ session_start();
 // Nhúng file kết nối CSDL
 include "DB/connect.php";
 
+// Gọi DAO
+include "./DAO/NguoiDungDAO.php";
+$dao = new NguoiDungDAO($conn);
+
 // KIỂM TRA NGƯỜI DÙNG ĐÃ ẤN NÚT "ĐĂNG NHẬP" CHƯA
 if (isset($_POST["login"])) {
 
@@ -40,49 +44,34 @@ if (isset($_POST["login"])) {
         return;
     }
 
-    // Câu truy vấn tìm tài khoản theo username và password
-    $sql = "SELECT * FROM nguoidung WHERE username = '$username'";
+    // Gửi yêu cầu kiểm tra đăng nhập
+    $nguoidung = $dao->authenticate($username);
+    if ($nguoidung != null && password_verify($password, $nguoidung->password)) {
 
-    // Thực thi truy vấn
-    $result = mysqli_query($conn, $sql);
+        // Lưu session
+        $_SESSION['user_id'] = $nguoidung->user_id;
+        $_SESSION['role']    = $nguoidung->role;
+        $_SESSION['ma_khoa'] = $nguoidung->ma_khoa;
 
-
-    // Nếu có ít nhất 1 tài khoản tồn tại
-    if (mysqli_num_rows($result) > 0) {
-        $row = mysqli_fetch_assoc($result);
-
-        // Kiểm tra mật khẩu đã mã hóa
-        if (password_verify($password, $row['password'])) {
-
-            // Lưu thông tin cần thiết vào session
-            $_SESSION['user_id'] = $row['user_id'];
-            $_SESSION['role'] = $row['role'];
-            $_SESSION['ma_khoa'] = $row['ma_khoa'];
-
-            // PHÂN QUYỀN -> CHUYỂN TRANG TƯƠNG ỨNG
-            switch ($row['role']) {
-                case 'NV_Khoa':
-                    header("Location: ./NVKhoa/nv_khoa.php");
-                    break;
-                case 'GV_CN':
-                    header("location: ./GVCN/gv_cn.php");
-                    break;
-                case 'LD_Khoa':
-                    header("Location: ./LDKhoa/ld_khoa.php");
-                    break;
-                case 'LD_Truong':
-                    header("Location: ./LDTruong/ld_truong.php");
-                    break;
-            }
-            exit;
-        } else {
-            // Sai mật khẩu -> thông báo lỗi
-            echo "<script>alert('Sai mật khẩu!');</script>";
+        // Chuyển đến giao diện chính theo phân quyền
+        switch ($nguoidung->role) {
+            case 'NV_Khoa':
+                header("Location: ./NVKhoa/nv_khoa.php");
+                break;
+            case 'GV_CN':
+                header("Location: ./GVCN/gv_cn.php");
+                break;
+            case 'LD_Khoa':
+                header("Location: ./LDKhoa/ld_khoa.php");
+                break;
+            case 'LD_Truong':
+                header("Location: ./LDTruong/ld_truong.php");
+                break;
         }
-    } else {
-        // Không tìm thấy tài khoản trong hệ thống
-        echo "<script>alert('Tài khoản không tồn tại!');</script>";
+        exit;
     }
+    // Đăng nhập thất bại -> hiện thông báo lỗi
+    echo "<script>alert('Tên đăng nhập hoặc mật khẩu không đúng!');</script>";
 }
 ?>
 
