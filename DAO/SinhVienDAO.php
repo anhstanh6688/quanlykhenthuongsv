@@ -48,6 +48,7 @@ class SinhVienDAO
                 VALUES ('$ma_sv', '$ho_ten', '$ngay_sinh', '$gioi_tinh', '$ma_lop', '$ma_khoa')";
 
         // Trả về kết quả thực thi
+
         return mysqli_query($this->conn, $sql);
     }
 

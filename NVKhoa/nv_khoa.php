@@ -29,6 +29,7 @@ $lopResult = mysqli_query($conn, $sql_lop);
 // TÌM KIẾM SINH VIÊN
 $search = "";
 $result = null;
+
 // Nếu người dùng nhấn nút Tìm kiếm
 if (isset($_GET['search_btn'])) {
 
@@ -211,11 +212,11 @@ if (isset($_GET['delete'])) {
         <!-- FORM THÊM -->
         <div class="form-box">
             <!-- Tên chức năng giao diện -->
-            <h3>Thêm sinh viên</h3>
+            <h3><?php echo $edit_state ? "Sửa sinh viên" : "Thêm sinh viên"; ?></h3>
             <form method="post">
                 <!-- Mã sinh viên -->
                 <label>Mã SV: </label>
-                <input type="text" placeholder="Nhập mã sinh viên. Ví dụ SV01" name="ma_sv" required
+                <input type="text" placeholder="Nhập mã sinh viên. Ví dụ SV01" name="ma_sv" required autofocus
                     value="<?php echo $edit_ma_sv; ?>" <?php echo $edit_state ? 'readonly' : ''; ?>>
 
                 <!-- Họ tên -->

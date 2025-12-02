@@ -188,3 +188,45 @@ tr:hover {
   background: #ff6b78;
   transform: scale(1.12);
 }
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+    padding: 10px;
+  }
+
+  .form-box,
+  .table-box {
+    width: 100%;
+    padding: 10px;
+  }
+
+  table {
+    font-size: 13px;
+  }
+
+  table th,
+  table td {
+    padding: 6px 4px;
+  }
+
+  .header-bar h2 {
+    font-size: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .form-box input,
+  .form-box select,
+  .form-box button {
+    font-size: 14px;
+    padding: 8px;
+  }
+
+  table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+}
