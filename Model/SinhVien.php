@@ -22,6 +22,7 @@ class SinhVien
         $this->ma_khoa   = $ma_khoa;
     }
 
+
     // Getter & Setter cho từng thuộc tính
     public function getMaSv()
     {
@@ -76,4 +77,7 @@ class SinhVien
     {
         $this->ma_khoa = $ma_khoa;
     }
+
+
+    //
 }

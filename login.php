@@ -85,116 +85,116 @@ if (isset($_POST["login"])) {
     <title>Trang đăng nhập</title>
 
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: linear-gradient(135deg, #eef3f9, #eef3f9);
+    }
+
+    /* Thẻ chứa form */
+    .login-container {
+        background: #fff;
+        padding: 50px 40px;
+        border-radius: 16px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        width: 380px;
+        text-align: center;
+        animation: fadeIn 0.8s ease;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(-20px);
         }
 
-        body {
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background: linear-gradient(135deg, #eef3f9, #eef3f9);
+        to {
+            opacity: 1;
+            transform: translateY(0);
         }
+    }
 
-        /* Thẻ chứa form */
-        .login-container {
-            background: #fff;
-            padding: 50px 40px;
-            border-radius: 16px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-            width: 380px;
-            text-align: center;
-            animation: fadeIn 0.8s ease;
-        }
+    /* Tiêu đề */
+    .login-container h2 {
+        font-size: 28px;
+        font-weight: 700;
+        color: #1a73e8;
+        margin-bottom: 25px;
+    }
 
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
+    /* Ô nhập */
+    .input-group {
+        width: 100%;
+        text-align: left;
+        margin-bottom: 20px;
+    }
 
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
+    .input-group label {
+        font-weight: 600;
+        color: #333;
+        font-size: 15px;
+    }
 
-        /* Tiêu đề */
-        .login-container h2 {
-            font-size: 28px;
-            font-weight: 700;
-            color: #1a73e8;
-            margin-bottom: 25px;
-        }
+    .input-group input {
+        width: 100%;
+        padding: 12px 14px;
+        border: 1.5px solid #d0d0d0;
+        border-radius: 10px;
+        margin-top: 6px;
+        font-size: 15px;
+        color: #333;
+        transition: 0.3s;
+    }
 
-        /* Ô nhập */
-        .input-group {
-            width: 100%;
-            text-align: left;
-            margin-bottom: 20px;
-        }
+    .input-group input:focus {
+        border-color: #1a73e8;
+        box-shadow: 0 0 8px rgba(26, 115, 232, 0.3);
+        outline: none;
+    }
 
-        .input-group label {
-            font-weight: 600;
-            color: #333;
-            font-size: 15px;
-        }
+    /* Nút đăng nhập */
+    button {
+        width: 100%;
+        padding: 14px;
+        background: linear-gradient(135deg, #1a73e8, #4a90e2);
+        border: none;
+        border-radius: 10px;
+        color: #fff;
+        font-size: 17px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: 0.3s;
+    }
 
-        .input-group input {
-            width: 100%;
-            padding: 12px 14px;
-            border: 1.5px solid #d0d0d0;
-            border-radius: 10px;
-            margin-top: 6px;
-            font-size: 15px;
-            color: #333;
-            transition: 0.3s;
-        }
+    button:hover {
+        background: linear-gradient(135deg, #1669c1, #2c74d4);
+        transform: translateY(-2px);
+    }
 
-        .input-group input:focus {
-            border-color: #1a73e8;
-            box-shadow: 0 0 8px rgba(26, 115, 232, 0.3);
-            outline: none;
-        }
+    /* Dòng footer nhỏ */
+    .footer {
+        margin-top: 18px;
+        font-size: 13px;
+        color: #666;
+    }
 
-        /* Nút đăng nhập */
-        button {
-            width: 100%;
-            padding: 14px;
-            background: linear-gradient(135deg, #1a73e8, #4a90e2);
-            border: none;
-            border-radius: 10px;
-            color: #fff;
-            font-size: 17px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: 0.3s;
-        }
+    .footer a {
+        color: #1a73e8;
+        text-decoration: none;
+    }
 
-        button:hover {
-            background: linear-gradient(135deg, #1669c1, #2c74d4);
-            transform: translateY(-2px);
-        }
-
-        /* Dòng footer nhỏ */
-        .footer {
-            margin-top: 18px;
-            font-size: 13px;
-            color: #666;
-        }
-
-        .footer a {
-            color: #1a73e8;
-            text-decoration: none;
-        }
-
-        .footer a:hover {
-            text-decoration: underline;
-        }
+    .footer a:hover {
+        text-decoration: underline;
+    }
     </style>
 </head>
 
