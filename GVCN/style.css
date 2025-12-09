@@ -1,0 +1,251 @@
+/* ==================== BODY ==================== */
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f5f5f5;
+}
+
+/* ==================== LAYOUT 2 CỘT ==================== */
+.container {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* ==================== CỘT TRÁI (MENU) ==================== */
+.sidebar {
+  width: 220px;
+  background: #007bff;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.sidebar h2 {
+  font-size: 22px;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar ul li {
+  padding: 12px 10px;
+  margin-bottom: 8px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.sidebar ul li:hover {
+  background: #0056b3;
+}
+
+/* ==================== CỘT PHẢI (NỘI DUNG) ==================== */
+.main-content {
+  flex: 1;
+  padding: 20px;
+  box-sizing: border-box;
+  overflow-x: auto;
+}
+
+/* ==================== HEADER GIÁO VIÊN CHỦ NHIỆM ==================== */
+.header {
+  text-align: center;
+  background: linear-gradient(90deg, #007bff, #3399ff); /* gradient xanh */
+  color: #fff; /* chữ trắng */
+  padding: 25px 0;
+  font-size: 28px;
+  font-weight: bold;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* bóng nhẹ nổi bật */
+}
+
+.header h2 {
+  margin: 0;
+  color: #fff; /* chữ trắng */
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3); /* bóng chữ nhẹ */
+}
+
+/* ==================== HEADER DANH SÁCH ==================== */
+.headera h2 {
+  text-align: center;
+  font-size: 24px;
+  margin-bottom: 20px;
+  color: #333;
+  font-weight: bold;
+}
+
+/* Căn giữa tiêu đề DANH SÁCH SINH VIÊN */
+.headera {
+  text-align: center;
+  width: 100%;
+  margin-top: 10px;
+}
+
+.headera h2 {
+  font-size: 24px;
+  margin-bottom: 20px;
+  color: #333;
+  font-weight: bold;
+  text-align: center;
+}
+
+/* Nút tìm kiếm màu xanh */
+.btn-row button[type="submit"] {
+  padding: 8px 20px;
+  background: #007bff; /* Xanh dương */
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.btn-row button[type="submit"]:hover {
+  background: #0056b3;
+  opacity: 0.9;
+}
+
+/* ==================== FORM LỌC ==================== */
+.filter-form {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 25px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 180px;
+}
+
+.form-group label {
+  margin-bottom: 6px;
+  text-align: center;
+}
+
+.filter-form select,
+.filter-form input {
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  width: 180px;
+  text-align: center;
+}
+
+/* ==================== BUTTON ==================== */
+.btn-row {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.btn-search {
+  padding: 8px 20px;
+  background: #28a745;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.logout-btn {
+  padding: 8px 20px;
+  background: #dc3545;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 6px;
+}
+
+/* ==================== TABLE ==================== */
+.table-container {
+  overflow-x: auto;
+}
+
+.styled-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+}
+
+.styled-table th {
+  background: #007bff;
+  color: #fff;
+  padding: 12px;
+  text-align: center;
+}
+
+.styled-table td {
+  padding: 12px;
+  border-bottom: 1px solid #ddd;
+  text-align: center;
+}
+
+.styled-table tbody tr:nth-child(even) {
+  background: #f3f3f3;
+}
+
+.styled-table tbody tr:hover {
+  background: #e0f7f3;
+}
+
+/* ==================== ACTION BUTTON ==================== */
+.actions {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+}
+
+.btn {
+  padding: 6px 12px;
+  border-radius: 4px;
+  text-decoration: none;
+  color: #fff;
+  font-size: 13px;
+}
+
+.btn.add {
+  background: #28a745;
+}
+.btn.edit {
+  background: #ffc107;
+  color: #fff;
+}
+.btn.delete {
+  background: #dc3545;
+}
+
+.btn:hover {
+  opacity: 0.85;
+}
+
+/* ==================== RESPONSIVE ==================== */
+@media screen and (max-width: 1000px) {
+  .container {
+    flex-direction: column;
+  }
+  .sidebar {
+    width: 100%;
+    flex-direction: row;
+    overflow-x: auto;
+  }
+  .sidebar ul {
+    display: flex;
+    gap: 10px;
+  }
+  .sidebar ul li {
+    white-space: nowrap;
+  }
+}
