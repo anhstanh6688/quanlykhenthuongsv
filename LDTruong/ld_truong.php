@@ -37,7 +37,7 @@ $username = e($_SESSION['username'] ?? '');
         <h2>Trang Lãnh đạo trường</h2>
         <div>
             <span style="margin-right:12px;">Xin chào, ldtruong</span>
-            <a class="logout" href="logout.php">Đăng xuất</a>
+            <a class="logout" href="../logout.php">Đăng xuất</a>
         </div>
     </div>
 

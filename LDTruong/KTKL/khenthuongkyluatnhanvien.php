@@ -20,23 +20,26 @@ $rewards = $dao->getAll();
 
 <head>
     <meta charset="UTF-8">
-    <title>Khen thưởng / Kỷ luật</title>
+    <title>Quản lý khen thưởng /kỷ luật nhân viên</title>
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-    <div class="header-bar">
-        <!-- Tiêu đề bên trái -->
-        <h2>Khen thưởng / Kỷ luật</h2>
-
-        <!-- Nhóm nút điều hướng bên phải -->
-        <div class="nav-actions">
-            <a href="../../CRUD/themquyetdinh.php" class="btn-add">Thêm mới</a>
-            <a href="../ld_truong.php" class="home">Trang chủ</a>
-            <a href="../../logout.php" class="logout">Đăng xuất</a>
+    <div class="header">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+            <h2>Quản lý khen thưởng /kỷ luật nhân viên</h2>
+            <div class="header-actions">
+                <a href="../../CRUD/themquyetdinh.php" class="btn-add">Thêm mới</a>
+                <a href="../ld_truong.php" class="home">Trang chủ</a>
+                <a href="../../logout.php" class="logout"
+                    style="background: #ff6b6b; color: white; padding: 8px 12px; border-radius: 6px; text-decoration: none;">Đăng
+                    xuất</a>
+            </div>
         </div>
-    </div>
 
+
+
+    </div>
 
     <div class="container">
         <table>
@@ -63,11 +66,11 @@ $rewards = $dao->getAll();
                             <td><?= htmlspecialchars($r['noi_dung']) ?></td>
                             <td><?= htmlspecialchars($r['ngay']) ?></td>
                             <td><?= htmlspecialchars($r['nguoi_duyet']) ?></td>
+
                             <td class="actions">
                                 <a href="../../CRUD/suaquyetdinh.php?id=<?= $r['id'] ?>" class="btn-edit">Sửa</a>
                                 <a href="../../CRUD/xoaquyetdinh.php?id=<?= $r['id'] ?>" class="btn-delete">Xóa</a>
                             </td>
-
                         </tr>
                     <?php endforeach; ?>
                 <?php else: ?>

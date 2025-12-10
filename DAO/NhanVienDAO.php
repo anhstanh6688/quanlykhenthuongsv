@@ -24,19 +24,26 @@ class NhanVienDAO
     // Thêm nhân viên mới
     public function insert(NhanVien $nv)
     {
-        $ma_nv   = mysqli_real_escape_string($this->conn, $nv->getMaNv());
-        $user_id = mysqli_real_escape_string($this->conn, $nv->getUserId());
-        $ho_ten  = mysqli_real_escape_string($this->conn, $nv->getHoTen());
+        $ma_nv     = mysqli_real_escape_string($this->conn, $nv->getMaNv());
+        $user_id   = (int)$nv->getUserId();
+        $ho_ten    = mysqli_real_escape_string($this->conn, $nv->getHoTen());
         $ngay_sinh = mysqli_real_escape_string($this->conn, $nv->getNgaySinh());
         $gioi_tinh = mysqli_real_escape_string($this->conn, $nv->getGioiTinh());
         $chuc_vu   = mysqli_real_escape_string($this->conn, $nv->getChucVu());
         $ma_khoa   = mysqli_real_escape_string($this->conn, $nv->getMaKhoa());
 
         $sql = "INSERT INTO nhanvien(ma_nv, user_id, ho_ten, ngay_sinh, gioi_tinh, chuc_vu, ma_khoa)
-                VALUES ('$ma_nv', '$user_id', '$ho_ten', '$ngay_sinh', '$gioi_tinh', '$chuc_vu', '$ma_khoa')";
+            VALUES ('$ma_nv', $user_id, '$ho_ten', '$ngay_sinh', '$gioi_tinh', '$chuc_vu', '$ma_khoa')";
 
-        return mysqli_query($this->conn, $sql);
+        $result = mysqli_query($this->conn, $sql);
+
+        if (!$result) {
+            die("SQL ERROR: " . mysqli_error($this->conn) . "<br><br>Query: $sql");
+        }
+
+        return true;
     }
+
 
     // Lấy nhân viên theo mã
     public function getByMaNv($ma_nv)
@@ -91,4 +98,3 @@ class NhanVienDAO
         return mysqli_query($this->conn, $sql);
     }
 }
-?>

@@ -1,13 +1,16 @@
 <?php
-class KhenThuongKyLuatDAO {
+class KhenThuongKyLuatDAO
+{
     private $conn;
 
-    public function __construct($db) {
+    public function __construct($db)
+    {
         $this->conn = $db; // $db là mysqli object
     }
 
     // Lấy tất cả
-    public function getAll() {
+    public function getAll()
+    {
         $sql = "SELECT * FROM khenthuongkyluatnhanvien ORDER BY id DESC";
         $stmt = $this->conn->prepare($sql);
         $stmt->execute();
@@ -16,7 +19,8 @@ class KhenThuongKyLuatDAO {
     }
 
     // Lấy theo ID
-    public function getById($id) {
+    public function getById($id)
+    {
         $sql = "SELECT * FROM khenthuongkyluatnhanvien WHERE id=? LIMIT 1";
         $stmt = $this->conn->prepare($sql);
         $stmt->bind_param("i", $id);
@@ -26,7 +30,8 @@ class KhenThuongKyLuatDAO {
     }
 
     // Thêm mới
-    public function insert($data) {
+    public function insert($data)
+    {
         $sql = "INSERT INTO khenthuongkyluatnhanvien (ma_nv, loai, cap_quan_ly, noi_dung, ngay, nguoi_duyet) 
                 VALUES (?, ?, ?, ?, ?, ?)";
         $stmt = $this->conn->prepare($sql);
@@ -39,11 +44,17 @@ class KhenThuongKyLuatDAO {
             $data['ngay'],
             $data['nguoi_duyet']
         );
-        return $stmt->execute();
+        if (!$stmt->execute()) {
+            echo "Execute error: " . $stmt->error;
+            return false;
+        }
+        return true;
+        // return $stmt->execute();
     }
 
     // Cập nhật
-    public function update($id, $data) {
+    public function update($id, $data)
+    {
         $sql = "UPDATE khenthuongkyluatnhanvien SET ma_nv=?, loai=?, cap_quan_ly=?, noi_dung=?, ngay=?, nguoi_duyet=? WHERE id=?";
         $stmt = $this->conn->prepare($sql);
         $stmt->bind_param(
@@ -60,11 +71,11 @@ class KhenThuongKyLuatDAO {
     }
 
     // Xóa
-    public function delete($id) {
+    public function delete($id)
+    {
         $sql = "DELETE FROM khenthuongkyluatnhanvien WHERE id=?";
         $stmt = $this->conn->prepare($sql);
         $stmt->bind_param("i", $id);
         return $stmt->execute();
     }
 }
-?>

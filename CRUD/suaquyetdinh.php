@@ -4,16 +4,13 @@ session_start();
 /* ============================
    KẾT NỐI DATABASE
    ============================ */
-// include __DIR__ . '/../../DB/connect.php';
-include "./DB/connect.php";
+include __DIR__ . '/../DB/connect.php';
+
 /* ============================
    NHÚNG MODEL + DAO
    ============================ */
-// include __DIR__ . '/../../Model/KhenThuongKyLuat.php';
-// include __DIR__ . '/../../DAO/KhenThuongKyLuatDAO.php';
-
-include "./Model/KhenThuongKyLuat.php";
-include "./DAO/KhenThuongKyLuatDAO.php";
+include __DIR__ . '/../Model/KhenThuongKyLuat.php';
+include __DIR__ . '/../DAO/KhenThuongKyLuatDAO.php';
 
 /* ============================
    KIỂM TRA QUYỀN + ID
@@ -56,7 +53,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     ];
 
     if ($khenThuongDAO->update($id, $data)) {
-        header("Location: ../../LDTruong/KTKL/khenthuongkyluatnhanvien.php");
+        header("Location: ../LDTruong/KTKL/khenthuongkyluatnhanvien.php");
         exit;
     } else {
         $msg = "Lỗi cập nhật dữ liệu!";
@@ -70,9 +67,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <title>Sửa quyết định</title>
 
-    <!-- CSS đúng -->
-    <link rel="stylesheet" href="../../LDTruong/KTKL/style.css">
-
+    <link rel="stylesheet" href="../LDTruong/KTKL/style.css">
 </head>
 
 <body>
@@ -125,9 +120,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             <div class="form-actions">
                 <button type="submit" class="btn-update">Cập nhật</button>
-
-                <!-- NÚT TRỞ VỀ -->
-                <a href="../../LDTruong/KTKL/khenthuongkyluatnhanvien.php" class="btn-cancel-gray">Hủy</a>
+                <a href="../LDTruong/KTKL/khenthuongkyluatnhanvien.php" class="btn-cancel-gray">Hủy</a>
             </div>
 
         </form>
