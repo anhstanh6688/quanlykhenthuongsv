@@ -26,7 +26,8 @@ class DanhGiaGVCNDAO
         $row['nhan_xet'],
         $row['nam_hoc'],
         $row['hoc_ky'],
-        $row['ngay']
+        $row['ngay'],
+        $row['gv_chu_nhiem']
     );
 }
 
@@ -47,11 +48,12 @@ class DanhGiaGVCNDAO
         $ngay   = mysqli_real_escape_string($this->conn, $dg->getNgay());
         $namhoc = mysqli_real_escape_string($this->conn, $dg->getNamHoc());
         $hocky  = mysqli_real_escape_string($this->conn, $dg->getHocKy());
+        $gvcn   = $this->conn->real_escape_string($dg->getGVChuNhiem());
 
-       $sql = "INSERT INTO danhgiagvcn(ma_sv, diem_ren_luyen, nhan_xet, nam_hoc, hoc_ky, ngay)
-        VALUES ('$ma_sv','$diem','$nx','$namhoc','$hocky','$ngay')";
+        $sql = "INSERT INTO danhgiagvcn(ma_sv, diem_ren_luyen, nhan_xet, nam_hoc, hoc_ky, ngay, gv_chu_nhiem)
+                VALUES ('$ma_sv', '$diem', '$nx', '$namhoc', '$hocky', '$ngay', '$gvcn')";
 
-        return mysqli_query($this->conn, $sql);
+        return $this->conn->query($sql);
     }
 
     // CẬP NHẬT ĐÁNH GIÁ
@@ -123,7 +125,8 @@ public function getLatestByMaSv($ma_sv)
         $row['nhan_xet'],
         $row['nam_hoc'],
         $row['hoc_ky'],
-        $row['ngay']
+        $row['ngay'],
+        $row['gv_chu_nhiem']
     );
 }
 

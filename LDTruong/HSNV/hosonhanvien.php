@@ -16,10 +16,10 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'LD_Truong') {
     exit("Bạn không có quyền truy cập trang này!");
 }
 
-$ma_khoa = $_SESSION['ma_khoa'] ?? '';
+$ma_khoa_session = $_SESSION['ma_khoa'] ?? '';
 $user_session_id = $_SESSION['user_id'] ?? 0;
 
-// Helper escape HTML
+// Escape HTML
 function e($s)
 {
     return htmlspecialchars($s ?? '', ENT_QUOTES, 'UTF-8');
@@ -32,13 +32,13 @@ if (isset($_GET['search_btn'])) {
     if ($search === "") {
         echo "<script>alert('Vui lòng nhập từ khóa tìm kiếm!');</script>";
     } else {
-        $result = $nvDAO->search($search, $ma_khoa);
+        $result = $nvDAO->search($search, $ma_khoa_session);
         if (mysqli_num_rows($result) === 0) {
             echo "<script>alert('Không tìm thấy nhân viên nào phù hợp!');</script>";
         }
     }
 }
-if (!isset($result)) $result = $nvDAO->getAllByKhoa($ma_khoa);
+if (!isset($result)) $result = $nvDAO->getAllByKhoa($ma_khoa_session);
 
 // ====================== THÊM NHÂN VIÊN ======================
 if (isset($_POST['them'])) {
@@ -49,10 +49,13 @@ if (isset($_POST['them'])) {
     $gioi_tinh = trim($_POST['gioi_tinh']);
     $chuc_vu   = trim($_POST['chuc_vu']);
 
-    // User ID lấy từ session (KHÔNG nhập thủ công)
+    // mã khoa lấy từ hidden input + fallback session
+    $ma_khoa = $_POST['ma_khoa'] ?? $ma_khoa_session;
+
+    // User ID tự lấy từ session
     $user_id = $user_session_id;
 
-    // VALIDATE
+    // VALIDATION
     if ($ho_ten === "" || $ngay_sinh === "") {
         echo "<script>alert('Không được để trống họ tên hoặc ngày sinh!');</script>";
     } elseif (!preg_match('/^[A-Za-zÀ-ỹ\s]+$/u', $ho_ten)) {
@@ -103,6 +106,7 @@ if (isset($_GET['edit'])) {
     $edit_ngay_sinh = $nv_edit['ngay_sinh'];
     $edit_gioi_tinh = $nv_edit['gioi_tinh'];
     $edit_chuc_vu   = $nv_edit['chuc_vu'];
+    $edit_ma_khoa   = $nv_edit['ma_khoa']; // lấy từ DB
 }
 
 // ====================== CẬP NHẬT NHÂN VIÊN ======================
@@ -113,7 +117,8 @@ if (isset($_POST['capnhat'])) {
     $ngay_sinh = trim($_POST['ngay_sinh']);
     $gioi_tinh = trim($_POST['gioi_tinh']);
     $chuc_vu   = trim($_POST['chuc_vu']);
-    $user_id   = trim($_POST['user_id']); // hidden input giữ nguyên user_id
+    $user_id   = trim($_POST['user_id']);
+    $ma_khoa   = $_POST['ma_khoa'] ?? $ma_khoa_session;
 
     $tuoi = date_diff(date_create($ngay_sinh), date_create())->y;
 
@@ -177,8 +182,9 @@ if (isset($_GET['delete'])) {
             <form method="post">
 
                 <label>Mã NV:</label>
-                <input type="text" name="ma_nv" required value="<?= e($edit_state ? $edit_ma_nv : "") ?>"
-                    <?= $edit_state ? "readonly" : "" ?>>
+                <input placeholder="Ví dụ: NV01" type="text" name="ma_nv" required 
+                       value="<?= e($edit_state ? $edit_ma_nv : "") ?>"
+                       <?= $edit_state ? "readonly" : "" ?>>
 
                 <?php if ($edit_state): ?>
                     <label>User ID:</label>
@@ -187,7 +193,8 @@ if (isset($_GET['delete'])) {
                 <?php endif; ?>
 
                 <label>Họ tên:</label>
-                <input type="text" name="ho_ten" required value="<?= e($edit_ho_ten ?? "") ?>">
+                <input placeholder="Ví dụ: Lê Văn A" type="text" name="ho_ten" 
+                       required value="<?= e($edit_ho_ten ?? "") ?>">
 
                 <label>Ngày sinh:</label>
                 <input type="date" name="ngay_sinh" required value="<?= e($edit_ngay_sinh ?? "") ?>">
@@ -198,8 +205,26 @@ if (isset($_GET['delete'])) {
                     <option value="Nu" <?= ($edit_gioi_tinh ?? "") == "Nu"  ? "selected" : ""; ?>>Nữ</option>
                 </select>
 
-                <label>Chức vụ:</label>
-                <input type="text" name="chuc_vu" value="<?= e($edit_chuc_vu ?? "") ?>">
+              <label>Chức vụ:</label>
+<select name="chuc_vu" required>
+    <option value="">-- Chọn chức vụ --</option>
+
+    <option value="Nhân viên"
+        <?= (isset($edit_chuc_vu) && $edit_chuc_vu === "Nhân viên") ? "selected" : "" ?>>
+        Nhân viên
+    </option>
+
+    <option value="Lãnh đạo khoa"
+        <?= (isset($edit_chuc_vu) && $edit_chuc_vu === "Lãnh đạo khoa") ? "selected" : "" ?>>
+        Lãnh đạo khoa
+    </option>
+</select>
+
+                <!-- MÃ KHOA -->
+                <label>Mã khoa:</label>
+                <input type="text" value="<?= e($edit_state ? $edit_ma_khoa : $ma_khoa_session) ?>" disabled>
+                <input type="hidden" name="ma_khoa" 
+                       value="<?= e($edit_state ? $edit_ma_khoa : $ma_khoa_session) ?>">
 
                 <button name="<?= $edit_state ? 'capnhat' : 'them'; ?>">
                     <?= $edit_state ? 'Cập nhật' : 'Thêm'; ?>
@@ -212,7 +237,8 @@ if (isset($_GET['delete'])) {
 
         <!-- FORM TÌM KIẾM -->
         <form method="GET">
-            <input type="text" name="search" placeholder="Tìm theo mã hoặc tên" value="<?= e($search) ?>">
+            <input type="text" name="search" placeholder="Tìm theo mã hoặc tên" 
+                   value="<?= e($search) ?>">
             <button type="submit" name="search_btn">Tìm kiếm</button>
         </form>
 
@@ -228,6 +254,7 @@ if (isset($_GET['delete'])) {
                     <th>Ngày sinh</th>
                     <th>Giới tính</th>
                     <th>Chức vụ</th>
+                    <th>Mã khoa</th>
                     <th>Thao tác</th>
                 </tr>
 
@@ -239,10 +266,12 @@ if (isset($_GET['delete'])) {
                         <td><?= e($row['ngay_sinh']) ?></td>
                         <td><?= e($row['gioi_tinh']) ?></td>
                         <td><?= e($row['chuc_vu']) ?></td>
+                        <td><?= e($row['ma_khoa']) ?></td>
                         <td class="actions">
                             <a href="hosonhanvien.php?edit=<?= e($row['ma_nv']) ?>" class="btn-edit">Sửa</a>
-                            <a href="hosonhanvien.php?delete=<?= e($row['ma_nv']) ?>" class="btn-delete"
-                                onclick="return confirm('Xóa nhân viên <?= e($row['ma_nv']) ?>?');">
+                            <a href="hosonhanvien.php?delete=<?= e($row['ma_nv']) ?>" 
+                               class="btn-delete"
+                               onclick="return confirm('Xóa nhân viên <?= e($row['ma_nv']) ?>?');">
                                 Xóa
                             </a>
                         </td>

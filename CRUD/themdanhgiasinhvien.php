@@ -1,4 +1,7 @@
 <?php
+session_start();
+$gv_chu_nhiem = $_SESSION['user_id']; 
+
 include "../DB/connect.php";
 
 // NHÚNG MODEL + DAO
@@ -47,14 +50,16 @@ if ($can_add && isset($_POST['submit'])) {
         $hoc_ky  = $_POST['hoc_ky'];
 
         $new = new DanhGiaGVCN(
-        $ma_sv,
-        $diem,
-        $nhan_xet,
-        date("Y-m-d"), // CHUYỂN NGÀY LÊN VỊ TRÍ 4
-        $nam_hoc,
-        $hoc_ky,
-        null // CHUYỂN ID (NULL) XUỐNG VỊ TRÍ 7
-        );
+        null,           // id
+        $ma_sv,         // ma_sv
+        $diem,          // diem
+        $nhan_xet,      // nhận xét
+        $nam_hoc,       // năm học
+        $hoc_ky,        // học kỳ
+        date("Y-m-d"),  // ngày
+        $gv_chu_nhiem   // GVCN — BẮT BUỘC
+);
+
 
         $result = $dgDAO->insert($new);
     }

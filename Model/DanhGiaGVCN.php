@@ -8,8 +8,9 @@ class DanhGiaGVCN
     private $ngay;
     private $nam_hoc;
     private $hoc_ky;
+    private $gv_chu_nhiem;
 
-    public function __construct($id, $ma_sv, $diem_ren_luyen, $nhan_xet, $nam_hoc, $hoc_ky, $ngay) // Bỏ $id=null ở đây
+    public function __construct($id, $ma_sv, $diem_ren_luyen, $nhan_xet, $nam_hoc, $hoc_ky, $ngay, $gv_chu_nhiem ) // Bỏ $id=null ở đây
     {
         $this->id = $id;
         $this->ma_sv = $ma_sv;
@@ -18,6 +19,7 @@ class DanhGiaGVCN
         $this->nam_hoc = $nam_hoc;
         $this->hoc_ky = $hoc_ky;
         $this->ngay = $ngay; 
+        $this->gv_chu_nhiem = $gv_chu_nhiem;
     }
 
     public function getId() { return $this->id; }
@@ -31,5 +33,6 @@ class DanhGiaGVCN
     public function setDiemRL($value){ $this->diem_ren_luyen = $value; }
     public function setNhanXet($value){ $this->nhan_xet = $value; }
     public function setNgay($value){ $this->ngay = $value; }
+    public function getGVChuNhiem() { return $this->gv_chu_nhiem; }
 
 }

@@ -27,7 +27,7 @@ $rewards = $dao->getAll();
 <body>
     <div class="header">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-            <h2>Quản lý khen thưởng /kỷ luật nhân viên</h2>
+           <h2 class="title-center">Quản lý khen thưởng / kỷ luật nhân viên</h2>
             <div class="header-actions">
                 <a href="../../CRUD/themquyetdinh.php" class="btn-add">Thêm mới</a>
                 <a href="../ld_truong.php" class="home">Trang chủ</a>

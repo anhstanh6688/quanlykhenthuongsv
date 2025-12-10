@@ -39,6 +39,11 @@ if (!$record) {
 $msg = "";
 
 /* ============================
+   LẤY DANH SÁCH NHÂN VIÊN – AUTOCOMPLETE
+   ============================ */
+$dsNhanVien = mysqli_query($conn, "SELECT ma_nv, ho_ten FROM nhanvien ORDER BY ma_nv ASC");
+
+/* ============================
    XỬ LÝ CẬP NHẬT
    ============================ */
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -46,7 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $data = [
         "ma_nv" => $_POST['ma_nv'] ?? "",
         "loai" => $_POST['loai'] ?? "",
-        "cap_quan_ly" => $_POST['cap_quan_ly'] ?: null,
+        "cap_quan_ly" => "Truong",   // SET CỨNG
         "noi_dung" => $_POST['noi_dung'] ?? "",
         "ngay" => $_POST['ngay'] ?? null,
         "nguoi_duyet" => $currentUserId
@@ -84,23 +89,37 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         <form method="post" class="form-edit">
 
+            <!-- ==========================
+                 MÃ NHÂN VIÊN AUTOCOMPLETE
+            ========================== -->
             <div class="form-group">
                 <label>Mã NV:</label>
-                <input type="text" name="ma_nv" value="<?= htmlspecialchars($record['ma_nv']) ?>" required>
+                <input list="dsMaNV" type="text" name="ma_nv"
+                       value="<?= htmlspecialchars($record['ma_nv']) ?>" required>
+                <datalist id="dsMaNV">
+                    <?php while ($nv = mysqli_fetch_assoc($dsNhanVien)): ?>
+                        <option value="<?= $nv['ma_nv'] ?>">
+                            <?= $nv['ma_nv'] . " - " . $nv['ho_ten'] ?>
+                        </option>
+                    <?php endwhile; ?>
+                </datalist>
             </div>
 
             <div class="form-group">
                 <label>Loại:</label>
                 <select name="loai">
-                    <option value="khen thưởng" <?= $record['loai'] == 'khen thưởng' ? 'selected' : '' ?>>Khen thưởng
-                    </option>
+                    <option value="khen thưởng" <?= $record['loai'] == 'khen thưởng' ? 'selected' : '' ?>>Khen thưởng</option>
                     <option value="kỷ luật" <?= $record['loai'] == 'kỷ luật' ? 'selected' : '' ?>>Kỷ luật</option>
                 </select>
             </div>
 
+            <!-- ==========================
+                 CẤP QUẢN LÝ SET CỨNG
+            ========================== -->
             <div class="form-group">
                 <label>Cấp quản lý:</label>
-                <input type="text" name="cap_quan_ly" value="<?= htmlspecialchars($record['cap_quan_ly']) ?>">
+                <input type="text" value="Truong" disabled style="background:#eee">
+                <input type="hidden" name="cap_quan_ly" value="Truong">
             </div>
 
             <div class="form-group">

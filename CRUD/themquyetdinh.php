@@ -1,51 +1,37 @@
 <?php
-// ==========================
-// Khởi động session để quản lý đăng nhập và phân quyền
-// ==========================
 session_start();
 
-// ==========================
-// Kết nối CSDL
-// ==========================
+/* Kết nối CSDL */
 include __DIR__ . '/../DB/connect.php';
 
-// ==========================
-// Nhúng DAO và Model để thao tác dữ liệu
-// ==========================
+/* Nhúng Model + DAO để xử lý dữ liệu */
 include "../DAO/KhenThuongKyLuatDAO.php";
 include "../Model/KhenThuongKyLuat.php";
 
-// ==========================
-// Kiểm tra quyền truy cập: chỉ cho phép vai trò "LD_Truong"
-// ==========================
+/* Chỉ Lãnh đạo Trường mới được truy cập */
 if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'LD_Truong') {
     exit("Bạn không có quyền truy cập!");
 }
 
-// ==========================
-// Khởi tạo DAO để thao tác dữ liệu khen thưởng/kỷ luật
-// ==========================
+/* Tạo đối tượng DAO để thao tác với bảng khen thưởng/kỷ luật */
 $dao = new KhenThuongKyLuatDAO($conn);
 
-// ==========================
-// Lấy ID & TÊN người duyệt từ session
-// ==========================
+/* Lấy thông tin người duyệt từ tài khoản đăng nhập */
 $currentUserId = $_SESSION['user_id'] ?? 0;
 $currentUserName = $_SESSION['hoten'] ?? "Không xác định";
 
-// ==========================
-// Biến lưu thông báo lỗi/thành công
-// ==========================
-$msg = '';
+$msg = "";
 
-// ==========================
-// Xử lý khi form được submit bằng POST
-// ==========================
+/* Lấy danh sách nhân viên cho autocomplete */
+$dsNhanVien = mysqli_query($conn, "SELECT ma_nv, ho_ten FROM nhanvien ORDER BY ma_nv ASC");
+
+/* Xử lý submit */
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
     $data = [
         'ma_nv'       => trim($_POST['ma_nv']),
         'loai'        => $_POST['loai'],
-        'cap_quan_ly' => trim($_POST['cap_quan_ly']) ?: 'Không xác định',
+        'cap_quan_ly' => "Truong",   // SET CỨNG
         'noi_dung'    => trim($_POST['noi_dung']),
         'ngay'        => $_POST['ngay'] ?: date('Y-m-d'),
         'nguoi_duyet' => $currentUserId
@@ -85,9 +71,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         <form method="post" action="" class="form">
 
+            <!-- ==========================
+                 MÃ NHÂN VIÊN - AUTOCOMPLETE
+            ========================== -->
             <label for="ma_nv">Mã NV:</label>
-            <input placeholder="Ví dụ. NV01" type="text" id="ma_nv" name="ma_nv"
-                value="<?= htmlspecialchars($_POST['ma_nv'] ?? '') ?>" required>
+            <input list="dsMaNV" placeholder="Ví dụ. NV01" 
+                   type="text" id="ma_nv" name="ma_nv"
+                   value="<?= htmlspecialchars($_POST['ma_nv'] ?? '') ?>" required>
+
+            <datalist id="dsMaNV">
+                <?php while ($nv = mysqli_fetch_assoc($dsNhanVien)): ?>
+                    <option value="<?= $nv['ma_nv'] ?>">
+                        <?= $nv['ma_nv'] . " - " . $nv['ho_ten'] ?>
+                    </option>
+                <?php endwhile; ?>
+            </datalist>
 
             <label for="loai">Loại:</label>
             <select id="loai" name="loai" required>
@@ -99,29 +97,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </option>
             </select>
 
-            <label for="cap_quan_ly">Cấp quản lý:</label>
-            <input placeholder="Ví dụ. Truong" type="text" id="cap_quan_ly" name="cap_quan_ly"
-                value="<?= htmlspecialchars($_POST['cap_quan_ly'] ?? '') ?>">
+            <!-- ==========================
+                 CẤP QUẢN LÝ = TRUONG (SET CỨNG)
+            ========================== -->
+            <label>Cấp quản lý:</label>
+            <input type="text" value="Truong" disabled style="background:#eee">
+
+            <input type="hidden" name="cap_quan_ly" value="Truong">
 
             <label for="noi_dung">Nội dung:</label>
             <textarea id="noi_dung" name="noi_dung"
                 required><?= htmlspecialchars($_POST['noi_dung'] ?? '') ?></textarea>
 
             <label for="ngay">Ngày:</label>
-            <input type="date" id="ngay" name="ngay" value="<?= htmlspecialchars($_POST['ngay'] ?? date('Y-m-d')) ?>">
+            <input type="date" id="ngay" name="ngay" 
+                   value="<?= htmlspecialchars($_POST['ngay'] ?? date('Y-m-d')) ?>">
 
-            <!-- ==========================
-                 NGƯỜI DUYỆT (THÊM MỚI)
-                 ========================== -->
             <label>Người duyệt:</label>
             <input type="text" value="<?= htmlspecialchars($currentUserId) ?>" disabled>
 
-            <!-- hidden để gửi ID -->
             <input type="hidden" name="nguoi_duyet" value="<?= $currentUserId ?>">
 
             <button type="submit">Thêm</button>
         </form>
     </div>
 </body>
-
 </html>
