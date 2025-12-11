@@ -77,7 +77,4 @@ class SinhVien
     {
         $this->ma_khoa = $ma_khoa;
     }
-
-
-    //
 }
