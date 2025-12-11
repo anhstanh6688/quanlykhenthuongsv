@@ -34,5 +34,4 @@ class DanhGiaGVCN
     public function setNhanXet($value){ $this->nhan_xet = $value; }
     public function setNgay($value){ $this->ngay = $value; }
     public function getGVChuNhiem() { return $this->gv_chu_nhiem; }
-
 }

@@ -50,6 +50,14 @@ if ($can_add && isset($_POST['submit'])) {
         $hoc_ky  = $_POST['hoc_ky'];
 
         $new = new DanhGiaGVCN(
+        $ma_sv,
+        $diem,
+        $nhan_xet,
+        date("Y-m-d"), // CHUYỂN NGÀY LÊN VỊ TRÍ 4
+        $nam_hoc,
+        $hoc_ky,
+        null // CHUYỂN ID (NULL) XUỐNG VỊ TRÍ 7
+        );
         null,           // id
         $ma_sv,         // ma_sv
         $diem,          // diem

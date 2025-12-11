@@ -48,12 +48,11 @@ class DanhGiaGVCNDAO
         $ngay   = mysqli_real_escape_string($this->conn, $dg->getNgay());
         $namhoc = mysqli_real_escape_string($this->conn, $dg->getNamHoc());
         $hocky  = mysqli_real_escape_string($this->conn, $dg->getHocKy());
-        $gvcn   = $this->conn->real_escape_string($dg->getGVChuNhiem());
 
-        $sql = "INSERT INTO danhgiagvcn(ma_sv, diem_ren_luyen, nhan_xet, nam_hoc, hoc_ky, ngay, gv_chu_nhiem)
-                VALUES ('$ma_sv', '$diem', '$nx', '$namhoc', '$hocky', '$ngay', '$gvcn')";
+       $sql = "INSERT INTO danhgiagvcn(ma_sv, diem_ren_luyen, nhan_xet, nam_hoc, hoc_ky, ngay)
+        VALUES ('$ma_sv','$diem','$nx','$namhoc','$hocky','$ngay')";
 
-        return $this->conn->query($sql);
+        return mysqli_query($this->conn, $sql);
     }
 
     // CẬP NHẬT ĐÁNH GIÁ
