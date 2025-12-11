@@ -9,6 +9,25 @@ include "DB/connect.php";
 include "./DAO/NguoiDungDAO.php";
 $dao = new NguoiDungDAO($conn);
 
+// Nếu đã đăng nhập, không cho quay lại login.php 
+if (isset($_SESSION["role"])) {
+    switch ($_SESSION['role']) {
+        case 'NV_Khoa':
+            header("Location: ./NVKhoa/nv_khoa.php");
+            break;
+        case 'GV_CN':
+            header("Location: ./GVCN/gv_cn.php");
+            break;
+        case 'LD_Khoa':
+            header("Location: ./LDKhoa/ld_khoa.php");
+            break;
+        case 'LD_Truong':
+            header("Location: ./LDTruong/ld_truong.php");
+            break;
+    }
+    exit;
+}
+
 // KIỂM TRA NGƯỜI DÙNG ĐÃ ẤN NÚT "ĐĂNG NHẬP" CHƯA
 if (isset($_POST["login"])) {
 
@@ -85,116 +104,164 @@ if (isset($_POST["login"])) {
     <title>Trang đăng nhập</title>
 
     <style>
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-    }
-
-    body {
-        height: 100vh;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        background: linear-gradient(135deg, #eef3f9, #eef3f9);
-    }
-
-    /* Thẻ chứa form */
-    .login-container {
-        background: #fff;
-        padding: 50px 40px;
-        border-radius: 16px;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-        width: 380px;
-        text-align: center;
-        animation: fadeIn 0.8s ease;
-    }
-
-    @keyframes fadeIn {
-        from {
-            opacity: 0;
-            transform: translateY(-20px);
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
         }
 
-        to {
-            opacity: 1;
-            transform: translateY(0);
+        body {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #eef3f9, #eef3f9);
         }
-    }
 
-    /* Tiêu đề */
-    .login-container h2 {
-        font-size: 28px;
-        font-weight: 700;
-        color: #1a73e8;
-        margin-bottom: 25px;
-    }
+        /* Thẻ chứa form */
+        .login-container {
+            background: #fff;
+            padding: 50px 40px;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            width: 380px;
+            text-align: center;
+            animation: fadeIn 0.8s ease;
+        }
 
-    /* Ô nhập */
-    .input-group {
-        width: 100%;
-        text-align: left;
-        margin-bottom: 20px;
-    }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
 
-    .input-group label {
-        font-weight: 600;
-        color: #333;
-        font-size: 15px;
-    }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
 
-    .input-group input {
-        width: 100%;
-        padding: 12px 14px;
-        border: 1.5px solid #d0d0d0;
-        border-radius: 10px;
-        margin-top: 6px;
-        font-size: 15px;
-        color: #333;
-        transition: 0.3s;
-    }
+        /* Tiêu đề */
+        .login-container h2 {
+            font-size: 28px;
+            font-weight: 700;
+            color: #1a73e8;
+            margin-bottom: 25px;
+        }
 
-    .input-group input:focus {
-        border-color: #1a73e8;
-        box-shadow: 0 0 8px rgba(26, 115, 232, 0.3);
-        outline: none;
-    }
+        /* Ô nhập */
+        .input-group {
+            width: 100%;
+            text-align: left;
+            margin-bottom: 20px;
+        }
 
-    /* Nút đăng nhập */
-    button {
-        width: 100%;
-        padding: 14px;
-        background: linear-gradient(135deg, #1a73e8, #4a90e2);
-        border: none;
-        border-radius: 10px;
-        color: #fff;
-        font-size: 17px;
-        font-weight: 600;
-        cursor: pointer;
-        transition: 0.3s;
-    }
+        .input-group label {
+            font-weight: 600;
+            color: #333;
+            font-size: 15px;
+        }
 
-    button:hover {
-        background: linear-gradient(135deg, #1669c1, #2c74d4);
-        transform: translateY(-2px);
-    }
+        .input-group input {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1.5px solid #d0d0d0;
+            border-radius: 10px;
+            margin-top: 6px;
+            font-size: 15px;
+            color: #333;
+            transition: 0.3s;
+        }
 
-    /* Dòng footer nhỏ */
-    .footer {
-        margin-top: 18px;
-        font-size: 13px;
-        color: #666;
-    }
+        .input-group input:focus {
+            border-color: #1a73e8;
+            box-shadow: 0 0 8px rgba(26, 115, 232, 0.3);
+            outline: none;
+        }
 
-    .footer a {
-        color: #1a73e8;
-        text-decoration: none;
-    }
+        /* Nút đăng nhập */
+        button {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #1a73e8, #4a90e2);
+            border: none;
+            border-radius: 10px;
+            color: #fff;
+            font-size: 17px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+        }
 
-    .footer a:hover {
-        text-decoration: underline;
-    }
+        button:hover {
+            background: linear-gradient(135deg, #1669c1, #2c74d4);
+            transform: translateY(-2px);
+        }
+
+        /* Dòng footer nhỏ */
+        .footer {
+            margin-top: 18px;
+            font-size: 13px;
+            color: #666;
+        }
+
+        .footer a {
+            color: #1a73e8;
+            text-decoration: none;
+        }
+
+        button:hover {
+            background: linear-gradient(135deg, #1669c1, #2c74d4);
+            transform: translateY(-2px);
+        }
+
+        /* Dòng footer nhỏ */
+        .footer {
+            margin-top: 18px;
+            font-size: 13px;
+            color: #666;
+        }
+
+        .footer a {
+            color: #1a73e8;
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 480px) {
+            .login-container {
+                width: 95%;
+                padding: 30px 20px;
+                border-radius: 12px;
+            }
+
+            .login-container h2 {
+                font-size: 22px;
+            }
+
+            .input-group label {
+                font-size: 14px;
+            }
+
+            .input-group input {
+                padding: 10px 12px;
+                font-size: 14px;
+            }
+
+            button {
+                padding: 12px;
+                font-size: 16px;
+            }
+
+            .footer {
+                font-size: 12px;
+            }
+        }
     </style>
 </head>
 
@@ -207,7 +274,7 @@ if (isset($_POST["login"])) {
         <div class="input-group">
             <!-- Tên đăng nhập -->
             <label for="username">Tên đăng nhập</label>
-            <input type="text" id="username" name="username" placeholder="Nhập tên đăng nhập" required>
+            <input type="text" id="username" name="username" placeholder="Nhập tên đăng nhập" required autofocus>
         </div>
 
         <div class="input-group">
