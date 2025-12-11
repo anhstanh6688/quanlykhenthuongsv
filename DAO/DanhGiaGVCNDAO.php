@@ -26,7 +26,8 @@ class DanhGiaGVCNDAO
         $row['nhan_xet'],
         $row['nam_hoc'],
         $row['hoc_ky'],
-        $row['ngay']
+        $row['ngay'],
+        $row['gv_chu_nhiem']
     );
 }
 
@@ -123,7 +124,8 @@ public function getLatestByMaSv($ma_sv)
         $row['nhan_xet'],
         $row['nam_hoc'],
         $row['hoc_ky'],
-        $row['ngay']
+        $row['ngay'],
+        $row['gv_chu_nhiem']
     );
 }
 
