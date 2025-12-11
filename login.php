@@ -211,6 +211,23 @@ if (isset($_POST["login"])) {
             text-decoration: none;
         }
 
+        button:hover {
+            background: linear-gradient(135deg, #1669c1, #2c74d4);
+            transform: translateY(-2px);
+        }
+
+        /* Dòng footer nhỏ */
+        .footer {
+            margin-top: 18px;
+            font-size: 13px;
+            color: #666;
+        }
+
+        .footer a {
+            color: #1a73e8;
+            text-decoration: none;
+        }
+
         .footer a:hover {
             text-decoration: underline;
         }
